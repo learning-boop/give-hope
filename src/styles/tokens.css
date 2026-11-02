@@ -1,0 +1,61 @@
+/* GiveHope design tokens — palette matched to the reference brief */
+:root {
+  /* Brand */
+  --coral: #F04951;          /* primary buttons, progress, highlights (large text only) */
+  --coral-ink: #D1323B;      /* coral for small text & icons — passes 4.5:1 on white */
+  --coral-ink-hover: #B0242C;
+  --red: #EC1B26;
+  --coral-tint: #FDECEC;
+  --coral-tint-2: #FBE4E5;
+  --coral-tint-3: #F8D7D9;
+  --track: #F3E6E6;
+
+  --ink-0: #121211;          /* hero and other full-bleed dark backgrounds */
+  --ink: #1D1D1B;            /* headings, dark sections */
+  --ink-2: #2A2A28;
+  --ink-3: #3A3A38;
+
+  --lime: #A9C74E;           /* accent — use as text ONLY on dark backgrounds */
+  --lime-tint: #EEF3DE;
+  --olive: #4E6416;
+  --olive-2: #5F7A1E;
+
+  --amber: #FFAC00;
+  --amber-tint: #FFF1D6;
+
+  /* Neutrals */
+  --text: #1D1D1B;
+  --muted: #4A4A49;
+  --placeholder-text: #5E5A55;
+  --on-dark: #FFFFFF;
+  --on-dark-soft: #D9D9D6;
+  --on-dark-muted: #BDBDB9;
+  --cream: #FBF8F6;
+  --sand: #F4F1EE;
+  --warm: #F3EEE8;
+  --line: #ECE8E4;
+  --line-2: #E3DFDA;
+  --white: #FFFFFF;
+
+  /* Shape & depth */
+  --radius-sm: 12px;
+  --radius: 14px;
+  --radius-md: 20px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+  --shadow-card: 0 18px 40px rgba(29, 29, 27, 0.12);
+  --shadow-soft: 0 18px 44px rgba(29, 29, 27, 0.08);
+  --shadow-float: 0 32px 70px rgba(18, 18, 17, 0.28);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout & type */
+  --container: 1240px;
+  --gutter: 24px;
+  --font: 'Red Hat Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+  --font-script: 'Caveat', 'Segoe Script', cursive;
+
+  /* Hand-drawn leaf sprigs, used as faint section backgrounds */
+  --leaf-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%23fff' stroke-width='1.4'%3E%3Cpath d='M20 190C60 140 100 90 180 15'/%3E%3Cpath d='M62 138c-22-6-34-22-36-44 22 4 36 20 36 44zM62 138c20 8 40 2 54-14-20-10-42-6-54 14zM102 96c-20-8-30-24-30-46 22 6 34 22 30 46zM102 96c20 6 38 0 50-18-20-8-40-2-50 18zM142 54c-14-10-20-26-16-44 18 8 24 24 16 44zM142 54c16 2 30-6 38-20-16-6-30 0-38 20z'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%23fff' stroke-width='1.4'%3E%3Cpath d='M20 190C60 140 100 90 180 15'/%3E%3Cpath d='M62 138c-22-6-34-22-36-44 22 4 36 20 36 44zM62 138c20 8 40 2 54-14-20-10-42-6-54 14zM102 96c-20-8-30-24-30-46 22 6 34 22 30 46zM102 96c20 6 38 0 50-18-20-8-40-2-50 18zM142 54c-14-10-20-26-16-44 18 8 24 24 16 44zM142 54c16 2 30-6 38-20-16-6-30 0-38 20z'/%3E%3C/svg%3E");
+  --leaf-art-ink: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%231D1D1B' stroke-width='1.4'%3E%3Cpath d='M20 190C60 140 100 90 180 15'/%3E%3Cpath d='M62 138c-22-6-34-22-36-44 22 4 36 20 36 44zM62 138c20 8 40 2 54-14-20-10-42-6-54 14zM102 96c-20-8-30-24-30-46 22 6 34 22 30 46zM102 96c20 6 38 0 50-18-20-8-40-2-50 18zM142 54c-14-10-20-26-16-44 18 8 24 24 16 44zM142 54c16 2 30-6 38-20-16-6-30 0-38 20z'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%231D1D1B' stroke-width='1.4'%3E%3Cpath d='M20 190C60 140 100 90 180 15'/%3E%3Cpath d='M62 138c-22-6-34-22-36-44 22 4 36 20 36 44zM62 138c20 8 40 2 54-14-20-10-42-6-54 14zM102 96c-20-8-30-24-30-46 22 6 34 22 30 46zM102 96c20 6 38 0 50-18-20-8-40-2-50 18zM142 54c-14-10-20-26-16-44 18 8 24 24 16 44zM142 54c16 2 30-6 38-20-16-6-30 0-38 20z'/%3E%3C/svg%3E");
+}

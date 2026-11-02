@@ -1,0 +1,194 @@
+/* Motion. base.css switches every animation and transition off for prefers-reduced-motion. */
+
+/* ---------- Page-load: hero headline lines rise out of a mask ---------- */
+.rise-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+.rise-line > span {
+  display: block;
+  animation: rise 1s var(--ease-out) both;
+  animation-delay: calc(var(--d, 0) * 110ms + 80ms);
+}
+
+.load-in {
+  animation: load-in 0.9s var(--ease-out) both;
+  animation-delay: calc(var(--d, 0) * 90ms + 300ms);
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(105%);
+  }
+}
+
+@keyframes load-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+@keyframes settle {
+  from {
+    transform: scale(1.08);
+  }
+}
+
+/* ---------- Scroll: sections arrive in different ways (usePageEffects adds .is-pending) ---------- */
+[data-reveal] {
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+
+[data-reveal].is-pending {
+  opacity: 0;
+  transform: translateY(36px);
+}
+
+[data-reveal='left'].is-pending {
+  transform: translateX(-70px);
+}
+
+[data-reveal='right'].is-pending {
+  transform: translateX(70px);
+}
+
+[data-reveal='zoom'].is-pending {
+  transform: scale(0.94);
+}
+
+/* Handwritten words flip into view like a turning page */
+[data-reveal='flip'] {
+  transform-origin: left center;
+  transition-duration: 1.2s;
+}
+
+[data-reveal='flip'].is-pending {
+  transform: perspective(700px) rotateY(-85deg);
+}
+
+.is-pending .progress__bar {
+  width: 0 !important;
+}
+
+/* Grid cells that wrap a card, so reveal and hover transforms stay on separate elements */
+.reveal-cell {
+  min-width: 0;
+}
+
+.cards-in > * {
+  animation: load-in 0.6s var(--ease-out) both;
+  animation-delay: calc(var(--d, 0) * 60ms);
+}
+
+@keyframes rail {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail {
+    overflow-x: auto;
+  }
+  .rail__group[inert] {
+    display: none;
+  }
+}
+
+/* ---------- Pointer glow on dark cards ---------- */
+[data-spotlight] {
+  position: relative;
+}
+
+[data-spotlight]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.14), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+[data-spotlight]:hover::before {
+  opacity: 1;
+}
+
+/* ---------- Hover lift ---------- */
+.stat,
+.quote-card,
+.dashboard,
+.doc-card {
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s ease;
+}
+
+.stat:hover,
+.quote-card:hover,
+.doc-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-soft);
+}
+
+.dashboard:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-card);
+}
+
+.tag--live::before {
+  animation: pulse-dot 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  50% {
+    box-shadow: 0 0 0 5px rgba(110, 138, 36, 0.22);
+  }
+}
+
+/* ---------- Scroll-linked, in browsers that support it ---------- */
+.scroll-progress {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-progress {
+      display: block;
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 60;
+      height: 3px;
+      background: var(--coral);
+      transform-origin: left;
+      animation: grow-x linear both;
+      animation-timeline: scroll(root);
+    }
+
+    /* Photos drift inside their frames as the page scrolls */
+    .parallax .photo {
+      height: 118%;
+      animation: drift-y linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes drift-y {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-15%);
+  }
+}
