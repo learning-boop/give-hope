@@ -3,7 +3,7 @@ import Icon from './Icon'
 import ShareButton from './ShareButton'
 import { Photo, ProgressBar } from './ui'
 import { inr, num } from '../site'
-import { fundraiserPath, progressOf } from '../data/campaigns'
+import { fundraiserPath, hasProgress, progressOf } from '../data/campaigns'
 
 export default function CampaignCard({ campaign, headingLevel = 3 }) {
   const c = campaign
@@ -18,6 +18,10 @@ export default function CampaignCard({ campaign, headingLevel = 3 }) {
           <span className="tag">{c.categoryLabel}</span>
           {c.taxBenefit && <span className="tag tag--lime">80G</span>}
         </div>
+        <span className="verified-seal">
+          <Icon name="badgeCheck" size={15} strokeWidth={2.4} />
+          Verified in person
+        </span>
         {c.photoIllustrative && <span className="photo-note">Illustrative photo</span>}
       </div>
       <div className="campaign-card__body">
@@ -30,17 +34,17 @@ export default function CampaignCard({ campaign, headingLevel = 3 }) {
           <span aria-hidden="true">·</span>
           <span>{c.location}</span>
         </p>
-        <div className="campaign-card__progress">
-          <ProgressBar percent={progressOf(c)} />
-          <div className="progress-meta">
-            <span>
-              <strong>{inr(c.raised, '₹[Raised]')}</strong> of {inr(c.goal, '₹[Goal]')}
-            </span>
-            <span>
-              {num(c.donors)} donors · {num(c.daysLeft)} days left
-            </span>
+        {hasProgress(c) && (
+          <div className="campaign-card__progress">
+            <ProgressBar percent={progressOf(c)} />
+            <div className="progress-meta">
+              <span>
+                <strong>{inr(c.raised)}</strong> of {inr(c.goal)}
+              </span>
+              {c.donors != null && <span>{num(c.donors)} donors</span>}
+            </div>
           </div>
-        </div>
+        )}
         <div className="campaign-card__actions">
           <Link to={path} className="btn btn--primary">
             Donate

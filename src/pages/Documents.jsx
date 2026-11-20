@@ -26,7 +26,7 @@ export default function Documents() {
 
       <section className="page-hero dark-hero">
         <div className="hero-bg">
-          <Photo name="classroom" alt="" priority />
+          <Photo name="school-lane" alt="" priority />
         </div>
         <div className="container">
           <div className="page-hero__copy page-hero__copy--wide">
@@ -42,7 +42,8 @@ export default function Documents() {
               </span>
             </h1>
             <p className="lead load-in" style={{ '--d': 1 }}>
-              Our registrations and reports are in one place, so you can see who you are giving to.
+              Give Hope is an initiative of {SITE.organisation.name}. Our registrations and reports are in one place, so you can
+              see who you are giving to.
             </p>
           </div>
         </div>

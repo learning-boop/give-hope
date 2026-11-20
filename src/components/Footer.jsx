@@ -35,9 +35,9 @@ const COLUMNS = [
   {
     title: 'Legal',
     links: [
-      { label: 'Privacy policy', href: '#' },
-      { label: 'Terms of use', href: '#' },
-      { label: 'Refund policy', href: '#' },
+      { label: 'Privacy policy', to: '/privacy-policy/' },
+      { label: 'Terms of use', to: '/terms/' },
+      { label: 'Refund policy', to: '/refund-policy/' },
     ],
   },
 ]
@@ -53,6 +53,9 @@ export default function Footer() {
             <p>
               GiveHope helps people across India raise funds for medical care, education, relief and animal welfare —
               openly and accountably.
+            </p>
+            <p className="site-footer__org">
+              An initiative of <strong>{SITE.organisation.name}</strong> · {SITE.organisation.tagline}
             </p>
             <address className="site-footer__contact" style={{ fontStyle: 'normal' }}>
               <span>{contact.address}</span>

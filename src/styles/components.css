@@ -355,7 +355,7 @@
 .feature__title {
   font-family: var(--font-display);
   font-size: 23px;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.2;
 }
 
@@ -435,6 +435,22 @@
   background: var(--white);
 }
 
+/* Every fundraiser is checked in person before launch */
+.verified-seal {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px 4px 7px;
+  border-radius: 999px;
+  background: var(--lime);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .campaign-card__body {
   display: flex;
   flex-direction: column;
@@ -446,7 +462,7 @@
 .campaign-card__title {
   font-family: var(--font-display);
   font-size: 23px;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.2;
 }
 
@@ -481,6 +497,7 @@
 .campaign-card__actions {
   display: flex;
   gap: 10px;
+  margin-top: auto;
 }
 
 .campaign-card__actions .btn {

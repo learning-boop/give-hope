@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { SITE } from '../site'
 
 const FOR_WHOM = [
   { id: 'myself', label: 'Myself' },
@@ -11,9 +13,16 @@ const FOR_WHOM = [
 
 const CAUSES = ['Medical treatment', 'NGO or charity project', 'Education', 'Disaster relief', 'Animal welfare', 'Community cause', 'Other']
 
+// What the visitor sees after sending, depending on how the answers went out (see lib/forms.js)
+const SENT_MESSAGES = {
+  sent: 'We have your details. A fundraiser manager will call you to help set up your fundraiser and upload documents.',
+  whatsapp: 'WhatsApp has opened with your details filled in. Press send there, and a fundraiser manager will call you back.',
+  email: 'Your email app has opened with your details filled in. Press send there, and a fundraiser manager will call you back.',
+}
+
 /**
  * Step 1 of the start-a-fundraiser flow.
- * `onSubmit(data)` is where you call your API (save the lead, send OTP, etc.).
+ * `onSubmit(data)` sends the answers and resolves 'sent', 'whatsapp' or 'email', or rejects if they could not go.
  */
 export default function StartFundraiserForm({ onSubmit }) {
   const [forWhom, setForWhom] = useState('family')
@@ -25,7 +34,9 @@ export default function StartFundraiserForm({ onSubmit }) {
   const [story, setStory] = useState('')
   const [links, setLinks] = useState([''])
   const [errors, setErrors] = useState({})
-  const [submitted, setSubmitted] = useState(false)
+  const [submitted, setSubmitted] = useState(null)
+  const [sending, setSending] = useState(false)
+  const [sendError, setSendError] = useState('')
 
   function validate() {
     const next = {}
@@ -44,7 +55,7 @@ export default function StartFundraiserForm({ onSubmit }) {
     const { ok, goalNumber } = validate()
     if (!ok) return
     const data = {
-      forWhom,
+      forWhom: FOR_WHOM.find((o) => o.id === forWhom).label,
       cause,
       goal: goalNumber,
       phone: `+91${phone}`,
@@ -53,8 +64,20 @@ export default function StartFundraiserForm({ onSubmit }) {
       story: story.trim(),
       links: links.map((l) => l.trim()).filter(Boolean),
     }
-    if (onSubmit) await onSubmit(data)
-    setSubmitted(true)
+    setSendError('')
+    setSending(true)
+    try {
+      setSubmitted((await onSubmit?.(data)) || 'sent')
+    } catch (err) {
+      const call = SITE.contact.phone.includes('[') ? '' : ` Please call us on ${SITE.contact.phone}.`
+      setSendError(
+        err.message === 'not-configured'
+          ? `Online sign-up is not connected yet, so your details were not sent.${call}`
+          : `Your details could not be sent. Please try again in a moment.${call}`,
+      )
+    } finally {
+      setSending(false)
+    }
   }
 
   if (submitted) {
@@ -62,11 +85,9 @@ export default function StartFundraiserForm({ onSubmit }) {
       <div className="form-card" aria-live="polite">
         <div className="form-success">
           <h2 className="h3">Thank you — you’re on your way</h2>
-          <p className="small">
-            A fundraiser manager will call you on +91 {phone} to help you set up your fundraiser and upload documents.
-          </p>
+          <p className="small">{SENT_MESSAGES[submitted]}</p>
         </div>
-        <button type="button" className="btn btn--outline" onClick={() => setSubmitted(false)}>
+        <button type="button" className="btn btn--outline" onClick={() => setSubmitted(null)}>
           Start another fundraiser
         </button>
       </div>
@@ -248,12 +269,18 @@ export default function StartFundraiserForm({ onSubmit }) {
         )}
       </div>
 
-      <button type="submit" className="btn btn--primary btn--lg">
-        Continue
+      {sendError && (
+        <p className="form-notice" role="alert">
+          {sendError}
+        </p>
+      )}
+      <button type="submit" className="btn btn--primary btn--lg" disabled={sending}>
+        {sending ? 'Sending…' : 'Continue'}
       </button>
       <p className="small" style={{ fontSize: 13 }}>
-        By continuing you agree to our <a href="#terms">Terms</a> and <a href="#guidelines">Fundraiser guidelines</a>. Our
-        team will call you to help set it up.
+        By continuing you agree to our <Link to="/terms/">Terms</Link>, including the{' '}
+        <Link to="/terms/#organisers">rules for organisers</Link>, and our <Link to="/privacy-policy/">Privacy policy</Link>.
+        Our team will call you to help set it up.
       </p>
     </form>
   )

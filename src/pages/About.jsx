@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import Seo from '../components/Seo'
 import Icon from '../components/Icon'
 import { Photo, SectionHead } from '../components/ui'
+import Doodles from '../components/Doodles'
+import { SITE } from '../site'
 
 const PRINCIPLES = [
   { icon: 'shieldCheck', title: 'Check first', text: 'We visit the organiser in person and review the documents and beneficiary before a fundraiser goes live.' },
@@ -28,7 +30,7 @@ export default function About() {
 
       <section className="page-hero dark-hero">
         <div className="hero-bg">
-          <Photo name="community" alt="" priority />
+          <Photo name="boat-river" alt="" priority />
         </div>
         <div className="container">
           <div className="page-hero__copy page-hero__copy--wide">
@@ -55,11 +57,22 @@ export default function About() {
         <div className="container split" style={{ '--split-gap': '56px' }}>
           <div className="about-story" data-reveal>
             <SectionHead eyebrow="Our story" title="Why we started" id="story-title" />
-            <p className="body">[Who founded GiveHope, when and where, and the moment or problem that led to it.]</p>
-            <p className="body">[What you have done so far and who you work with, using only details you can verify.]</p>
+            <p className="body">
+              Give Hope is an initiative of <strong>{SITE.organisation.name}</strong>. {SITE.organisation.tagline}.
+            </p>
+            <p className="body">
+              We are a non-profit organisation dedicated to building a better, safer and more equitable society, especially for
+              those in need. Founded in 2023, we have worked tirelessly on social awareness, advocacy and direct aid, addressing
+              the many sides of a problem to achieve our mission.
+            </p>
+            <p className="body">
+              At the heart of our mission is a firm belief that every individual deserves the opportunity to thrive. By working
+              hand-in-hand with volunteers, donors and partners, we are creating sustainable, long-lasting solutions that pave the
+              way for a brighter tomorrow.
+            </p>
           </div>
           <div className="about-photo" data-reveal>
-            <Photo name="community" sizes="(max-width: 900px) 100vw, 560px" />
+            <Photo name="women-craft" sizes="(max-width: 900px) 100vw, 560px" />
           </div>
         </div>
       </section>
@@ -125,16 +138,19 @@ export default function About() {
         </div>
       </section>
 
-      <section className="section section--flush-top" aria-labelledby="about-cta-title">
+      <section className="section section--flush-top cta-section" aria-labelledby="about-cta-title">
         <div className="container">
-          <div className="media-tile closing" data-reveal>
-            <Photo name="women-field" alt="" sizes="(max-width: 1240px) 100vw, 1200px" />
-            <h2 className="h2" id="about-cta-title">
-              Check our documents, then decide.
-            </h2>
-            <p className="body">Our registrations and reports are in one place, so you can review them before you give.</p>
-            <div className="cta-row">
-              <Link to="/documents/" className="btn btn--primary btn--lg">
+          <div className="cta-panel" data-reveal>
+            <div className="cta-panel__photo">
+              <Photo name="flower-work" alt="" sizes="(max-width: 900px) 90vw, 520px" />
+            </div>
+            <Doodles />
+            <div className="cta-panel__copy">
+              <h2 className="h2" id="about-cta-title">
+                Check our documents, then decide.
+              </h2>
+              <p className="body">Our registrations and reports are in one place, so you can review them before you give.</p>
+              <Link to="/documents/" className="btn btn--dark btn--lg btn--pill">
                 View documents <Icon name="arrowRight" size={20} strokeWidth={2.2} />
               </Link>
             </div>

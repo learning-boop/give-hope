@@ -5,6 +5,7 @@ import Fundraiser from './pages/Fundraiser'
 import Monthly from './pages/Monthly'
 import About from './pages/About'
 import Documents from './pages/Documents'
+import Legal from './pages/Legal'
 import NotFound from './pages/NotFound'
 import { campaigns } from './data/campaigns'
 
@@ -20,6 +21,9 @@ export const routes = [
       { path: 'monthly', element: <Monthly /> },
       { path: 'about', element: <About /> },
       { path: 'documents', element: <Documents /> },
+      { path: 'privacy-policy', element: <Legal doc="privacy" /> },
+      { path: 'terms', element: <Legal doc="terms" /> },
+      { path: 'refund-policy', element: <Legal doc="refund" /> },
       {
         path: 'fundraiser/:slug',
         element: <Fundraiser />,

@@ -62,8 +62,12 @@ export default function Fundraiser() {
                   <span>Organised by {c.organiser}</span>
                   <span aria-hidden="true">·</span>
                   <span>{c.location}</span>
-                  <span aria-hidden="true">·</span>
-                  <span>{num(c.daysLeft)} days left</span>
+                  {c.daysLeft != null && (
+                    <>
+                      <span aria-hidden="true">·</span>
+                      <span>{num(c.daysLeft)} days left</span>
+                    </>
+                  )}
                 </p>
               </div>
 

@@ -1,57 +1,25 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Icon from './Icon'
-import { Photo } from './ui'
+import { ProgressBar } from './ui'
+import { inr, num } from '../site'
+import { campaigns, fundraiserPath, hasProgress, progressOf } from '../data/campaigns'
 
 const AUTOPLAY_MS = 7000
 const DRAG_THRESHOLD = 70
 
-const SLIDES = [
-  {
-    eyebrow: 'Verified fundraisers across India',
-    title: 'Your gift.',
-    accent: 'Their second chance.',
-    text: 'GiveHope connects you with verified fundraisers for medical care, education, disaster relief and animal welfare — and shows you how every rupee is spent.',
-    primary: { label: 'Donate now', href: '#fundraisers' },
-    secondary: { label: 'Start a fundraiser', to: '/crowdfunding/' },
-    photos: ['children', 'students'],
-  },
-  {
-    eyebrow: 'Crowdfunding',
-    title: 'Raise funds for the causes',
-    accent: 'you care about',
-    text: 'Start a fundraiser for a medical emergency, an NGO project or your community. We verify it, help you share it, and send the money straight to where it is needed.',
-    primary: { label: 'Start a fundraiser', to: '/crowdfunding/' },
-    secondary: { label: 'How it works', to: '/crowdfunding/#how-crowdfunding-works' },
-    photos: ['women-field', 'community'],
-  },
-  {
-    eyebrow: 'Monthly giving',
-    title: 'Be there for them',
-    accent: 'every single month',
-    text: 'One-off gifts help in a crisis. A monthly gift keeps the work going once the crisis has passed.',
-    primary: { label: 'Join monthly', to: '/monthly/' },
-    secondary: { label: 'Browse fundraisers', href: '#fundraisers' },
-    photos: ['classroom', 'meal'],
-  },
-]
-
-function SlideLink({ link, className, children }) {
-  if (link.to) {
-    return (
-      <Link to={link.to} className={className}>
-        {children}
-      </Link>
-    )
-  }
-  return (
-    <a href={link.href} className={className}>
-      {children}
-    </a>
-  )
+// One transparent cut-out per slide, each from a different cause. `width` caps how wide the picture may grow,
+// so wide group shots stay clear of the text. Slides appear in this order.
+const CUTOUTS = {
+  'heart-surgery-for-a-6-year-old': { src: '/images/cutout-boy.webp', w: 1402, h: 1116, width: 580, position: 'right center', alt: 'A young boy in a hospital gown hugging a teddy bear, his mother holding him close' },
+  'school-fees-for-girls-in-rural-schools': { src: '/images/cutout-students.webp', w: 1112, h: 1100, width: 580, alt: 'Two smiling schoolgirls in blue uniforms, one holding notebooks and one with a school bag' },
+  'meals-and-medicines-for-elders-living-alone': { src: '/images/cutout-elder.webp', w: 1516, h: 996, width: 580, position: 'right center', alt: 'Two young volunteers sitting and smiling with an elderly couple' },
+  'food-and-treatment-for-injured-street-dogs': { src: '/images/cutout-dog.webp', w: 1354, h: 1024, width: 580, position: 'right center', alt: 'A smiling young woman hugging a brown dog, with a second dog beside a food bowl' },
 }
 
-/** Home hero: slides change by themselves, with the arrows and dots, or by dragging sideways. */
+const SLIDES = Object.keys(CUTOUTS).map((slug) => campaigns.find((c) => c.slug === slug))
+
+/** Home hero: each slide is a fundraiser. Slides change by themselves, with the arrows and dots, or by dragging sideways. */
 export default function HeroSlider() {
   const [active, setActive] = useState(0)
   const [direction, setDirection] = useState(1)
@@ -106,58 +74,86 @@ export default function HeroSlider() {
 
   return (
     <section
-      className="hero-slider leaf-bg leaf-bg--ink"
+      className="hero-slider"
       aria-roledescription="carousel"
-      aria-label="Ways to help"
+      aria-label="Fundraisers that need you now"
       style={{ '--dir': direction }}
       onFocus={(e) => setHeld(e.target.matches(':focus-visible'))}
       onBlur={() => setHeld(false)}
     >
+      <h1 className="sr-only">GiveHope — donate to verified fundraisers across India</h1>
       <div
         className="hero-slider__stage"
         ref={stage}
-        data-parallax
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
       >
-        {SLIDES.map((slide, i) => {
-          const Heading = i === 0 ? 'h1' : 'h2'
+        {SLIDES.map((c, i) => {
           const position = i === active ? 'is-active' : i === (active - 1 + count) % count ? 'is-prev' : 'is-next'
+          const path = fundraiserPath(c)
+          const cutout = CUTOUTS[c.slug]
           return (
             <div
-              className={`hero-slide ${position}${i % 2 ? ' hero-slide--flip' : ''}`}
+              className={`hero-slide ${position}`}
               role="group"
               aria-roledescription="slide"
               aria-label={`${i + 1} of ${count}`}
               inert={i !== active}
-              key={slide.eyebrow}
+              key={c.slug}
             >
+              {/* The slide's cut-out stands on the right, beside its text */}
+              <figure className="hero-figure" style={{ '--fig-w': `${cutout.width}px`, '--fig-pos': cutout.position }}>
+                <span className="hero-figure__glow" aria-hidden="true" />
+                <img
+                  src={cutout.src}
+                  width={cutout.w}
+                  height={cutout.h}
+                  alt={cutout.alt}
+                  // All four are small; load them up front so a slide never arrives empty
+                  fetchPriority={i === 0 ? 'high' : 'low'}
+                  decoding="async"
+                />
+                <figcaption className="photo-note">Illustrative photo</figcaption>
+              </figure>
               <div className="container hero-slide__inner">
                 <div className="hero-slide__copy">
-                  <p className="hero-slide__eyebrow">{slide.eyebrow}</p>
-                  <Heading className="display hero-slide__title">
-                    {slide.title} <span className="accent">{slide.accent}</span>
-                  </Heading>
-                  <p className="lead">{slide.text}</p>
+                  <p className="hero-slide__kicker">
+                    {c.urgent ? 'Urgent · ' : 'Support · '}
+                    <span>{c.categoryLabel}</span>
+                  </p>
+                  <h2 className="display hero-slide__title">{c.title}</h2>
+                  <p className="organiser">
+                    <Icon name="badgeCheck" size={18} strokeWidth={2.2} />
+                    <span>{c.organiser}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{c.location}</span>
+                  </p>
+                  <p className="lead">{c.summary}</p>
+                  {hasProgress(c) && (
+                    <div className="hero-slide__progress">
+                      <ProgressBar percent={progressOf(c)} />
+                      <div className="progress-meta">
+                        <span>
+                          <strong>{inr(c.raised)}</strong> of {inr(c.goal)}
+                        </span>
+                        {c.donors != null && <span>{num(c.donors)} donors</span>}
+                      </div>
+                    </div>
+                  )}
                   <div className="cta-row">
-                    <SlideLink link={slide.primary} className="btn btn--primary btn--lg">
-                      {slide.primary.label} <Icon name="arrowRight" size={20} strokeWidth={2.2} />
-                    </SlideLink>
-                    <SlideLink link={slide.secondary} className="text-link text-link--ink">
-                      {slide.secondary.label}
-                    </SlideLink>
+                    <Link to={path} className="btn btn--primary btn--lg btn--pill">
+                      Donate now
+                    </Link>
+                    <a href="#fundraisers" className="text-link text-link--ink">
+                      See all fundraisers
+                    </a>
                   </div>
-                </div>
-                <div className="collage">
-                  <span className="collage__glow" aria-hidden="true" />
-                  <div className="collage__main">
-                    <Photo name={slide.photos[0]} alt="" priority={i === 0} sizes="(max-width: 900px) 80vw, 520px" />
-                  </div>
-                  <div className="collage__small">
-                    <Photo name={slide.photos[1]} alt="" sizes="(max-width: 900px) 45vw, 300px" />
-                  </div>
+                  <p className="hero-slide__secure">
+                    <Icon name="lock" size={16} />
+                    Secure payments by UPI, card and netbanking · 80G tax receipts
+                  </p>
                 </div>
               </div>
             </div>
@@ -165,22 +161,26 @@ export default function HeroSlider() {
         })}
       </div>
 
-      <button type="button" className="hero-arrow hero-arrow--prev" aria-label="Previous slide" onClick={() => go(-1)}>
+      <button type="button" className="hero-arrow hero-arrow--prev" aria-label="Previous fundraiser" onClick={() => go(-1)}>
         <Icon name="arrowLeft" size={22} strokeWidth={2.2} />
       </button>
-      <button type="button" className="hero-arrow hero-arrow--next" aria-label="Next slide" onClick={() => go(1)}>
+      <button type="button" className="hero-arrow hero-arrow--next" aria-label="Next fundraiser" onClick={() => go(1)}>
         <Icon name="arrowRight" size={22} strokeWidth={2.2} />
       </button>
 
       <div className="hero-controls">
-        {SLIDES.map((slide, i) => (
+        <span className="hero-count" aria-hidden="true">
+          {String(active + 1).padStart(2, '0')}
+          <span> / {String(count).padStart(2, '0')}</span>
+        </span>
+        {SLIDES.map((c, i) => (
           <button
             type="button"
             className="hero-dot"
-            aria-label={`Show slide ${i + 1}`}
+            aria-label={`Show fundraiser ${i + 1}`}
             aria-current={i === active ? 'true' : undefined}
             onClick={() => goTo(i)}
-            key={slide.eyebrow}
+            key={c.slug}
           />
         ))}
         <button

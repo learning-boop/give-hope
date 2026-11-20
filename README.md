@@ -35,7 +35,7 @@ Node 20.19+ or 22.12+ is required (Vite 8).
   formats them (₹1,00,000) and calculates progress automatically. `null` shows a `[placeholder]`.
 - **`src/data/faqs.js`** — donor and crowdfunding FAQs.
 - **`src/styles/tokens.css`** — colours, radii, fonts. Palette: coral `#F04951`, charcoal `#1D1D1B`,
-  lime `#A9C74E`, amber `#FFAC00`. Fonts: DM Serif Display for headings, Red Hat Display for text, Caveat for handwritten accents.
+  lime `#A9C74E`, amber `#FFAC00`. Fonts: Roboto Slab for headings, Open Sans for text, Caveat for the footer line.
 - **`public/og-image.png`** — default 1200×630 share image.
 - **`src/data/photos.js`** and **`public/images/`** — photos (800px and 1600px WebP, plus a 1200×630 JPEG in `og/` for
   share previews). `src/lib/usePageEffects.js` and `src/styles/effects.css` hold the motion effects.

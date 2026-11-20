@@ -1,5 +1,5 @@
 // Sample fundraisers. Replace with data from your API/CMS.
-// Leave raised / goal / donors / daysLeft as null to show [placeholders];
+// Leave raised / goal / donors / daysLeft as null until you have real figures: the progress bar and counts stay hidden;
 // fill them with numbers and the cards format them as ₹1,00,000 automatically.
 // photo is a key from data/photos.js. Remove photoIllustrative once a fundraiser has its own consented photo.
 
@@ -35,7 +35,6 @@ export const campaigns = [
     goal: null,
     donors: null,
     daysLeft: null,
-    samplePercent: 68,
     photo: 'hospital',
     photoIllustrative: true,
   },
@@ -54,7 +53,6 @@ export const campaigns = [
     goal: null,
     donors: null,
     daysLeft: null,
-    samplePercent: 58,
     alsoIn: ['hunger', 'community'],
     photo: 'flood',
     photoIllustrative: true,
@@ -74,7 +72,6 @@ export const campaigns = [
     goal: null,
     donors: null,
     daysLeft: null,
-    samplePercent: 55,
     alsoIn: ['children', 'women'],
     photo: 'students',
     photoIllustrative: true,
@@ -94,7 +91,6 @@ export const campaigns = [
     goal: null,
     donors: null,
     daysLeft: null,
-    samplePercent: 23,
     alsoIn: ['hunger'],
     photo: 'elder',
     photoPosition: 'center 25%',
@@ -115,7 +111,6 @@ export const campaigns = [
     goal: null,
     donors: null,
     daysLeft: null,
-    samplePercent: 79,
     photo: 'dog',
     photoPosition: 'center 35%',
     photoIllustrative: true,
@@ -135,7 +130,6 @@ export const campaigns = [
     goal: null,
     donors: null,
     daysLeft: null,
-    samplePercent: 34,
     alsoIn: ['hunger', 'education'],
     photo: 'meal',
     photoIllustrative: true,
@@ -154,8 +148,9 @@ export function filterCampaigns(categoryId) {
   return campaigns.filter((c) => c.category === categoryId || c.alsoIn?.includes(categoryId))
 }
 
-/** Real progress when raised/goal are known, otherwise the sample width used in the design */
+/** True once a fundraiser has real raised and goal amounts. Until then no progress bar is shown. */
+export const hasProgress = (c) => c.raised != null && Boolean(c.goal)
+
 export function progressOf(c) {
-  if (c.raised != null && c.goal) return Math.round((c.raised / c.goal) * 100)
-  return c.samplePercent ?? 0
+  return hasProgress(c) ? Math.round((c.raised / c.goal) * 100) : 0
 }

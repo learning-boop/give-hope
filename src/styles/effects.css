@@ -85,21 +85,6 @@
   animation-delay: calc(var(--d, 0) * 60ms);
 }
 
-@keyframes rail {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rail {
-    overflow-x: auto;
-  }
-  .rail__group[inert] {
-    display: none;
-  }
-}
-
 /* ---------- Pointer glow on dark cards ---------- */
 [data-spotlight] {
   position: relative;

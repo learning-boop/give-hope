@@ -39,7 +39,7 @@ export default function Monthly() {
 
       <section className="page-hero dark-hero">
         <div className="hero-bg">
-          <Photo name="students" alt="" priority position="center 30%" />
+          <Photo name="field-care" alt="" priority />
         </div>
         <div className="container split">
           <div className="page-hero__copy">

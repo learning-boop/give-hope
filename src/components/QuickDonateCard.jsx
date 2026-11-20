@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ProgressBar } from './ui'
 import { inr, num } from '../site'
-import { fundraiserPath, progressOf } from '../data/campaigns'
+import { fundraiserPath, hasProgress, progressOf } from '../data/campaigns'
 
 const AMOUNTS = [500, 1000, 2500, 5000]
 
@@ -38,15 +38,17 @@ export default function QuickDonateCard({ campaign, showTitle = true, onDonate, 
       ) : (
         <TitleTag className="h3">Choose an amount</TitleTag>
       )}
-      <div className="stack" style={{ '--stack-gap': '8px' }}>
-        <ProgressBar percent={progressOf(c)} />
-        <div className="progress-meta">
-          <span>
-            <strong>{inr(c.raised, '₹[Raised]')}</strong> of {inr(c.goal, '₹[Goal]')}
-          </span>
-          <span>{num(c.donors)} donors</span>
+      {hasProgress(c) && (
+        <div className="stack" style={{ '--stack-gap': '8px' }}>
+          <ProgressBar percent={progressOf(c)} />
+          <div className="progress-meta">
+            <span>
+              <strong>{inr(c.raised)}</strong> of {inr(c.goal)}
+            </span>
+            {c.donors != null && <span>{num(c.donors)} donors</span>}
+          </div>
         </div>
-      </div>
+      )}
       <div className="amounts" role="group" aria-label="Choose an amount">
         {AMOUNTS.map((a) => (
           <button

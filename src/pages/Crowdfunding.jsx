@@ -2,17 +2,18 @@ import Seo from '../components/Seo'
 import Icon from '../components/Icon'
 import Faq from '../components/Faq'
 import StartFundraiserForm from '../components/StartFundraiserForm'
+import { sendForm } from '../lib/forms'
 import { CheckList, Photo, ProgressBar, SectionHead } from '../components/ui'
 import { crowdfundingFaqs } from '../data/faqs'
 import { SITE } from '../site'
 
 const TYPES = [
-  { photo: 'hospital', title: 'Medical emergencies', text: 'Surgeries, cancer treatment, transplants, ICU stays and long-term care.' },
-  { photo: 'community', title: 'NGO and charity projects', text: 'Programmes, relief drives, equipment and buildings for registered NGOs and trusts.' },
-  { photo: 'students', title: 'Education', text: 'School and college fees, books, scholarships and learning centres.' },
-  { photo: 'flood', title: 'Disaster relief', text: 'Food and hygiene kits, shelter and rebuilding after floods, cyclones and fires.' },
-  { photo: 'dog', position: 'center 35%', title: 'Animal welfare', text: 'Rescue, treatment, shelters and feeding drives for street and farm animals.' },
-  { photo: 'women-field', title: 'Community causes', text: 'Water, sanitation, libraries and other projects that help a whole village or ward.' },
+  { photo: 'operating-room', title: 'Medical emergencies', text: 'Surgeries, cancer treatment, transplants, ICU stays and long-term care.' },
+  { photo: 'men-group', title: 'NGO and charity projects', text: 'Programmes, relief drives, equipment and buildings for registered NGOs and trusts.' },
+  { photo: 'children-group', title: 'Education', text: 'School and college fees, books, scholarships and learning centres.' },
+  { photo: 'flood-car', title: 'Disaster relief', text: 'Food and hygiene kits, shelter and rebuilding after floods, cyclones and fires.' },
+  { photo: 'street-cows', title: 'Animal welfare', text: 'Rescue, treatment, shelters and feeding drives for street and farm animals.' },
+  { photo: 'town-street', title: 'Community causes', text: 'Water, sanitation, libraries and other projects that help a whole village or ward.' },
 ]
 
 const STEPS = [
@@ -63,7 +64,7 @@ export default function Crowdfunding() {
       {/* Hero + start form */}
       <section className="cf-hero dark-hero">
         <div className="hero-bg">
-          <Photo name="women-field" alt="" priority />
+          <Photo name="woman-orange" alt="" priority />
         </div>
         <div className="container split">
           <div className="cf-hero__copy">
@@ -94,10 +95,18 @@ export default function Crowdfunding() {
             </div>
           </div>
           <StartFundraiserForm
-            onSubmit={async (data) => {
-              // TODO: send to your backend, e.g. await fetch('/api/fundraiser-leads', { method: 'POST', body: JSON.stringify(data) })
-              console.info('Fundraiser lead', data)
-            }}
+            onSubmit={(data) =>
+              sendForm('New fundraiser request', {
+                Name: data.name,
+                Phone: data.phone,
+                Email: data.email,
+                'Raising for': data.forWhom,
+                Cause: data.cause,
+                'Amount needed': `₹${data.goal.toLocaleString('en-IN')}`,
+                'What the money is for': data.story,
+                Links: data.links.join(', ') || 'None',
+              })
+            }
           />
         </div>
       </section>
@@ -167,7 +176,7 @@ export default function Crowdfunding() {
               <span className="small" style={{ fontSize: 14, fontWeight: 700 }}>
                 Your fundraiser
               </span>
-              <span className="tag tag--live">Live</span>
+              <span className="tag tag--live">Example</span>
             </div>
             <p className="h3" style={{ fontSize: 22 }}>
               [Fundraiser title]
@@ -265,7 +274,7 @@ export default function Crowdfunding() {
                 Raising as an NGO or trust
               </h3>
               <CheckList items={DOCS_NGO} variant="ink" />
-              <a href="#register-ngo" className="btn btn--dark">
+              <a href="#main" className="btn btn--dark">
                 Register your NGO
               </a>
             </div>

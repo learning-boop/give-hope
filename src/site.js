@@ -12,7 +12,23 @@ export const SITE = {
     address: '[Registered address]',
     email: '[support@domain]',
     phone: '[+91 phone number]',
-    whatsapp: '', // e.g. '919876543210' — enables the WhatsApp contact link when filled
+    // Country code and number, digits only, e.g. '919876543210'. Turns on the WhatsApp chat button,
+    // and lets forms open WhatsApp with the answers filled in when no form service is set below.
+    whatsapp: '',
+  },
+
+  // Where form answers go. Easiest: create a free access key at web3forms.com with your email,
+  // then set endpoint: 'https://api.web3forms.com/submit' and accessKey: '<your key>'.
+  // (Formspree works too: set endpoint to your form URL and leave accessKey empty.)
+  forms: {
+    endpoint: '',
+    accessKey: '',
+  },
+
+  // The organisation behind Give Hope, as shown on the logo
+  organisation: {
+    name: 'CHANGE NGO',
+    tagline: 'A small step change lots of lives',
   },
 
   registration: {
