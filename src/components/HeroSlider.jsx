@@ -5,7 +5,7 @@ import { ProgressBar } from './ui'
 import { inr, num } from '../site'
 import { campaigns, fundraiserPath, hasProgress, progressOf } from '../data/campaigns'
 
-const AUTOPLAY_MS = 7000
+const AUTOPLAY_MS = 4000
 const DRAG_THRESHOLD = 70
 
 // One transparent cut-out per slide, each from a different cause. `width` caps how wide the picture may grow,
