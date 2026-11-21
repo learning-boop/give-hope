@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import Icon from './Icon'
 import { PHOTOS } from '../data/photos'
 
@@ -29,6 +30,52 @@ export function Photo({ name, alt, sizes = '100vw', priority = false, position, 
       decoding="async"
       style={position ? { objectPosition: position } : undefined}
     />
+  )
+}
+
+/**
+ * Silent looping video from public/images/<name>.webm and .mp4, shown like a photo.
+ * Its first frame (<name>-1600.webp) shows until it loads. It only downloads and plays while on screen,
+ * and stays a still picture for visitors who ask their device for less motion.
+ */
+export function LoopVideo({ name, className = '' }) {
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const video = ref.current
+    if (!video || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
+    video.muted = true // browsers only autoplay muted video, and React doesn't always set the attribute
+    const watcher = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.preload = 'auto'
+          video.play().catch(() => {}) // e.g. data saver blocks it: the poster stays
+        } else {
+          video.pause()
+        }
+      },
+      { rootMargin: '200px 0px' },
+    )
+    watcher.observe(video)
+    return () => watcher.disconnect()
+  }, [])
+
+  return (
+    <video
+      ref={ref}
+      className={`photo ${className}`}
+      poster={`/images/${name}-1600.webp`}
+      muted
+      loop
+      playsInline
+      preload="none"
+      disablePictureInPicture
+      role="img"
+      aria-label={PHOTOS[name].alt}
+    >
+      <source src={`/images/${name}.webm`} type="video/webm" />
+      <source src={`/images/${name}.mp4`} type="video/mp4" />
+    </video>
   )
 }
 

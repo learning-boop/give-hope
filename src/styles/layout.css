@@ -354,3 +354,245 @@
   text-align: right;
   color: var(--lime);
 }
+
+/* ---------- Donate menu in the navbar ---------- */
+.donate-menu__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.donate-menu__toggle:hover,
+.donate-menu.is-open .donate-menu__toggle {
+  color: var(--coral-ink);
+}
+
+.donate-menu__chevron {
+  transition: transform 0.25s var(--ease-out);
+}
+
+.donate-menu.is-open .donate-menu__chevron {
+  transform: rotate(180deg);
+}
+
+.donate-panel {
+  position: absolute;
+  top: calc(100% - 6px);
+  left: 0;
+  right: 0;
+  z-index: 60;
+  display: grid;
+  grid-template-columns: minmax(0, 2.3fr) minmax(0, 1fr);
+  gap: 28px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background: var(--white);
+  box-shadow: var(--shadow-float);
+  animation: donate-in 0.25s var(--ease-out);
+}
+
+.donate-panel[hidden] {
+  display: none;
+}
+
+@keyframes donate-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+.donate-panel__title {
+  margin-bottom: 14px;
+  color: var(--coral-ink);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.donate-panel__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav .donate-cause,
+.site-nav .donate-way {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border: 0;
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-size: 14px;
+  white-space: normal;
+  transition: background-color 0.2s ease;
+}
+
+.site-nav .donate-cause:hover,
+.site-nav .donate-way:hover {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.donate-cause__photo {
+  position: relative;
+  flex: none;
+  width: 46px;
+  height: 46px;
+}
+
+.donate-cause__photo img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px var(--coral-tint-2);
+}
+
+.donate-cause__icon {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--white);
+  border-radius: 50%;
+  background: var(--coral-ink);
+  color: var(--white);
+}
+
+.donate-cause__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.donate-cause__label {
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.donate-cause:hover .donate-cause__label,
+.donate-way:hover .donate-cause__label {
+  color: var(--coral-ink);
+}
+
+.donate-cause__line {
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.site-nav .donate-panel__all {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  font-size: 14px;
+}
+
+.donate-panel__ways {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  background: var(--cream);
+}
+
+.donate-panel__ways .donate-panel__title {
+  margin-bottom: 6px;
+}
+
+.site-nav .donate-way:hover {
+  background: var(--white);
+}
+
+.donate-way__icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--coral-tint);
+  color: var(--coral-ink);
+}
+
+.donate-panel__note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 12px;
+  color: var(--olive);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+/* Phones and tablets: the causes fold out inside the menu */
+@media (max-width: 1140px) {
+  .donate-menu {
+    border-bottom: 1px solid var(--line);
+  }
+  .donate-menu__toggle {
+    justify-content: space-between;
+    width: 100%;
+    padding-block: 14px;
+    font-size: 17px;
+  }
+  .donate-panel {
+    position: static;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    max-height: 62vh;
+    margin-bottom: 14px;
+    padding: 4px 0 0;
+    overflow-y: auto;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .donate-panel__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .donate-cause__line {
+    display: none;
+  }
+  .donate-panel__ways {
+    padding: 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  .donate-cause__photo {
+    width: 38px;
+    height: 38px;
+  }
+  .site-nav .donate-cause {
+    gap: 10px;
+    padding: 6px;
+    font-size: 13.5px;
+  }
+}

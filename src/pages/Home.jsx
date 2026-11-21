@@ -1,13 +1,16 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import Seo from '../components/Seo'
 import Icon from '../components/Icon'
 import CampaignCard from '../components/CampaignCard'
 import Faq from '../components/Faq'
 import HeroSlider from '../components/HeroSlider'
 import Doodles from '../components/Doodles'
-import { CheckList, Photo, SectionHead } from '../components/ui'
+import OfferRow from '../components/OfferRow'
+import { GET_INVOLVED, PROGRAMS, PROJECTS } from '../data/change-work'
+import { CheckList, LoopVideo, Photo, SectionHead } from '../components/ui'
 import { CATEGORIES, filterCampaigns } from '../data/campaigns'
+import { CAUSE_DETAILS } from '../data/causes'
 import { donorFaqs } from '../data/faqs'
 import { MONTHLY_PLANS } from '../data/monthly'
 import { SITE } from '../site'
@@ -124,22 +127,6 @@ const REASONS = [
   { audience: 'For families', title: 'Help that goes where it is needed', text: 'Funds go directly to the hospital, NGO or beneficiary account, in stages as the bills come in.', icon: 'homeHeart' },
 ]
 
-// Photo and icon for each cause circle. Disability and Faith use stand-in photos until you have real ones.
-const CAUSE_DETAILS = {
-  all: { icon: 'grid' },
-  urgent: { photo: 'flood-car', icon: 'alert' },
-  medical: { photo: 'operating-room', icon: 'pulse' },
-  children: { photo: 'children-group', icon: 'users' },
-  education: { photo: 'classroom', icon: 'book' },
-  elderly: { photo: 'elder-turban', icon: 'homeHeart' },
-  animals: { photo: 'cow-care', icon: 'paw' },
-  disaster: { photo: 'flood-boat', icon: 'lifebuoy' },
-  hunger: { photo: 'community-kitchen', icon: 'bowl' },
-  women: { photo: 'women-circle', icon: 'woman' },
-  disability: { photo: 'field-care', icon: 'accessibility' },
-  community: { photo: 'village-lane', icon: 'village' },
-  faith: { photo: 'flower-work', icon: 'diya' },
-}
 
 /** Keeps fundraisers whose title, story, organiser, place or cause contain every word typed. */
 function searchCampaigns(list, query) {
@@ -153,6 +140,14 @@ function searchCampaigns(list, query) {
 
 export default function Home() {
   const [category, setCategory] = useState('all')
+  // The navbar's Donate menu links here as /?cause=medical#fundraisers — pick that cause once the page is running
+  const { search } = useLocation()
+  useEffect(() => {
+    const cause = new URLSearchParams(search).get('cause')
+    // Read after hydration on purpose: the prerendered page has no query string, so reading it during render would mismatch
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (cause && CATEGORIES.some((cat) => cat.id === cause)) setCategory(cause)
+  }, [search])
   const [query, setQuery] = useState('')
   const list = searchCampaigns(filterCampaigns(category), query)
   const categoryLabel = CATEGORIES.find((cat) => cat.id === category)?.label
@@ -273,6 +268,24 @@ export default function Home() {
         </div>
       </section>
 
+      {/* CHANGE NGO projects */}
+      <section id="projects" className="offer-section" aria-labelledby="projects-title">
+        <div className="container">
+          <div className="split-head" data-reveal>
+            <div className="split-head__title">
+              <span className="eyebrow">Our projects</span>
+              <h2 className="h2" id="projects-title">
+                The work CHANGE NGO does every day
+              </h2>
+            </div>
+            <div className="split-head__aside">
+              <p className="body">Long-running projects in health, food, children, women and more. Tap one to see what it does.</p>
+            </div>
+          </div>
+          <OfferRow items={PROJECTS} kind="Project" label="projects" />
+        </div>
+      </section>
+
       {/* Monthly giving */}
       <section id="monthly" className="section" aria-labelledby="monthly-title">
         <div className="container">
@@ -309,6 +322,24 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* CHANGE NGO programmes */}
+      <section id="programs" className="offer-section" aria-labelledby="programs-title">
+        <div className="container">
+          <div className="split-head" data-reveal>
+            <div className="split-head__title">
+              <span className="eyebrow">Our programmes</span>
+              <h2 className="h2" id="programs-title">
+                Ways to be part of the change
+              </h2>
+            </div>
+            <div className="split-head__aside">
+              <p className="body">Programmes you can join, support or share, from schools to kindness drives.</p>
+            </div>
+          </div>
+          <OfferRow items={PROGRAMS} kind="Programme" label="programmes" />
         </div>
       </section>
 
@@ -360,7 +391,7 @@ export default function Home() {
           </div>
 
           <div className="photo-band parallax" data-reveal="zoom">
-            <Photo name="giving-plate" sizes="(max-width: 1240px) 100vw, 1200px" />
+            <LoopVideo name="food-serving" />
           </div>
 
           <div className="pill-cta-row" data-reveal>
@@ -476,6 +507,21 @@ export default function Home() {
           <div className="feature-grid__photo parallax" data-reveal="zoom">
             <Photo name="field-smile" position="center 30%" sizes="(max-width: 1020px) 100vw, 480px" />
           </div>
+        </div>
+      </section>
+
+      {/* Get involved */}
+      <section id="get-involved" className="offer-section" aria-labelledby="involved-title">
+        <div className="container">
+          <div className="split-head" data-reveal>
+            <div className="split-head__title">
+              <span className="eyebrow">Get involved</span>
+              <h2 className="h2" id="involved-title">
+                More ways to make a difference
+              </h2>
+            </div>
+          </div>
+          <OfferRow items={GET_INVOLVED} label="ways to get involved" />
         </div>
       </section>
 

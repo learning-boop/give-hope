@@ -42,7 +42,8 @@ export const PHOTOS = {
   'donor-update': { alt: 'A man at home smiles at a photo update of a child recovering in hospital on his phone', source: 'Supplied by GiveHope (AI-generated illustration)' },
   'family-visit': { alt: 'A GiveHope volunteer sits on a mat with a mother and her elderly father, going through a hospital bill together', source: 'Supplied by GiveHope (AI-generated illustration)' },
   'woman-speaking': { alt: 'A woman in glasses and a colourful sari, speaking', source: unsplash('woman-in-glasses-wearing-a-colorful-sari-talking-vP-y3ckJDS4') },
-  'giving-plate': { alt: 'A woman handing another woman a plate of food', source: unsplash('a-woman-handing-another-woman-a-plate-of-food-11y9Eu0JwEI') },
+  // A silent looping video (food-serving.webm/.mp4, trimmed and compressed, Gemini watermark removed) with its first frame as -1600/-800.webp.
+  'food-serving': { alt: 'Two volunteers serve rice and curry on banana leaves to an elderly woman and a line of villagers outside their homes', source: 'Supplied by GiveHope (AI-generated video)' },
   'elder-women': { alt: 'Two elderly women in saris talking together', source: unsplash('a-woman-sitting-next-to-a-woman-who-is-holding-a-piece-of-paper-gkOHzSbC7I8') },
   'field-smile': { alt: 'A smiling woman in an orange shirt and striped headscarf among palm trees', source: unsplash('smiling-woman-in-orange-button-up-shirt-wearing-gray-and-white-striped-knit-cap-O9KuCTihxLk') },
   children: { alt: 'A group of smiling schoolchildren in uniform waving at the camera', source: unsplash('group-of-children-taking-picture-j9jZSqfH5YI') },
