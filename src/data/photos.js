@@ -21,7 +21,9 @@ export const PHOTOS = {
   'operating-room': { alt: 'An empty operating room with a surgical table and overhead lights', source: unsplash('operating-room-with-surgical-table-LPurJnihmQI') },
 
   // Home "Categories" circles use 240px square thumbnails: public/images/<name>-thumb.webp
-  // (also made for flood-car, operating-room, children-group, field-care, flower-work). Full sizes of these 7 stay in photo-library/.
+  // (also made for flood-car, operating-room, children-group, field-care, flower-work).
+  // Each cause page (/causes/<id>/) uses the same photo full size as its banner.
+  'children-smile': { alt: 'Six smiling schoolchildren in blue uniforms with their arms around each other', source: 'Supplied by GiveHope (AI-generated illustration)' },
   classroom: { alt: 'Young children sitting at green desks in a classroom', source: unsplash('a-group-of-young-children-sitting-at-a-table-R7liKyziWG8') },
   'elder-turban': { alt: 'An elderly man in a white turban, smiling', source: unsplash('an-old-man-with-a-white-turban-holding-a-stick-Jp4s-ol0RcY') },
   'cow-care': { alt: 'A woman feeding a cow beside a blue wall', source: unsplash('woman-feeding-cow-b1Ywo-ZKtTs') },

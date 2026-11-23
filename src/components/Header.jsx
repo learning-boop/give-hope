@@ -19,6 +19,7 @@ const WAYS = [
   { icon: 'receipt', title: 'Give once', text: 'Support a verified fundraiser today', href: '/#fundraisers' },
   { icon: 'pulse', title: 'Give every month', text: 'Steady help for causes you care about', to: '/monthly/' },
   { icon: 'users', title: 'Start a fundraiser', text: 'Raise funds for someone in need', to: '/crowdfunding/' },
+  { icon: 'shieldCheck', title: 'Register your NGO', text: 'Raise funds for your organisation', to: '/register-ngo/' },
 ]
 
 /** "Donate" in the navbar: a menu of every cause, plus the ways to give. */
@@ -86,7 +87,7 @@ function DonateMenu({ onNavigate }) {
               const { photo, icon, text } = CAUSE_DETAILS[cat.id]
               return (
                 <li key={cat.id}>
-                  <a href={causePath(cat.id)} className="donate-cause" onClick={done}>
+                  <Link to={causePath(cat.id)} className="donate-cause" onClick={done}>
                     <span className="donate-cause__photo">
                       <img src={`/images/${photo}-thumb.webp`} width="240" height="240" alt="" loading="lazy" decoding="async" />
                       <span className="donate-cause__icon">
@@ -97,7 +98,7 @@ function DonateMenu({ onNavigate }) {
                       <span className="donate-cause__label">{cat.label}</span>
                       <span className="donate-cause__line">{text}</span>
                     </span>
-                  </a>
+                  </Link>
                 </li>
               )
             })}

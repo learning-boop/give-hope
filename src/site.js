@@ -14,7 +14,7 @@ export const SITE = {
     phone: '[+91 phone number]',
     // Country code and number, digits only, e.g. '919876543210'. Turns on the WhatsApp chat button,
     // and lets forms open WhatsApp with the answers filled in when no form service is set below.
-    whatsapp: '',
+    whatsapp: '919885933339',
   },
 
   // Where form answers go. Easiest: create a free access key at web3forms.com with your email,

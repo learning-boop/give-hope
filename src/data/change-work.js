@@ -12,7 +12,7 @@ export const GET_INVOLVED = [
   { id: 'tax', tag: 'Tax benefit', name: 'Save tax as you give', text: 'Fundraisers marked 80G come with a tax receipt by email', to: '/#faq', cta: 'How it works' },
   { id: 'monthly', tag: 'Monthly giving', name: 'Give every month', text: 'Steady help for a cause you care about. Pause anytime.', to: '/monthly/', cta: 'Start monthly' },
   { id: 'fundraiser', tag: 'For individuals', name: 'Start a fundraiser', text: 'Raise money for someone who needs help. We verify it first.', to: '/crowdfunding/', cta: 'Start now' },
-  { id: 'ngo', tag: 'For NGOs', name: 'Register your NGO', text: 'Raise funds for your programmes on GiveHope', to: '/crowdfunding/#documents', cta: 'See what’s needed' },
+  { id: 'ngo', tag: 'For NGOs', name: 'Register your NGO', text: 'Raise funds for your programmes on GiveHope', to: '/register-ngo/', cta: 'Register now' },
 ]
 
 export const PROJECTS = [

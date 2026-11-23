@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom'
 import Seo from '../components/Seo'
+import { DOCS_NGO } from '../data/ngo'
 import Icon from '../components/Icon'
 import Faq from '../components/Faq'
 import StartFundraiserForm from '../components/StartFundraiserForm'
@@ -43,13 +45,6 @@ const DOCS_PERSON = [
   'Beneficiary’s ID and written consent',
   'Medical estimate or hospital letter (for medical fundraisers)',
   'Hospital or beneficiary bank account details',
-]
-
-const DOCS_NGO = [
-  'Registration certificate (Trust, Society or Section 8)',
-  '12A and 80G certificates',
-  'PAN of the organisation',
-  'Bank account details and a cancelled cheque',
 ]
 
 export default function Crowdfunding() {
@@ -274,9 +269,9 @@ export default function Crowdfunding() {
                 Raising as an NGO or trust
               </h3>
               <CheckList items={DOCS_NGO} variant="ink" />
-              <a href="#main" className="btn btn--dark">
+              <Link to="/register-ngo/" className="btn btn--dark">
                 Register your NGO
-              </a>
+              </Link>
             </div>
           </div>
         </div>

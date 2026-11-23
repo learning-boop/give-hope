@@ -116,7 +116,7 @@ const RAISE_PATHS = [
     title: 'Register your NGO',
     text: 'Raise funds for your programmes with your registration, 12A and 80G certificates, PAN and bank details.',
     icon: 'shieldCheck',
-    to: '/crowdfunding/#documents',
+    to: '/register-ngo/',
   },
 ]
 

@@ -1,6 +1,9 @@
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import Crowdfunding from './pages/Crowdfunding'
+import RegisterNgo from './pages/RegisterNgo'
+import Cause from './pages/Cause'
+import { CAUSE_IDS } from './data/causes'
 import Fundraiser from './pages/Fundraiser'
 import Monthly from './pages/Monthly'
 import About from './pages/About'
@@ -18,6 +21,13 @@ export const routes = [
     children: [
       { index: true, element: <Home /> },
       { path: 'crowdfunding', element: <Crowdfunding /> },
+      { path: 'register-ngo', element: <RegisterNgo /> },
+      {
+        path: 'causes/:id',
+        element: <Cause />,
+        // One static page per cause, e.g. /causes/children/
+        getStaticPaths: () => CAUSE_IDS.map((id) => `causes/${id}`),
+      },
       { path: 'monthly', element: <Monthly /> },
       { path: 'about', element: <About /> },
       { path: 'documents', element: <Documents /> },

@@ -17,6 +17,7 @@ const COLUMNS = [
     title: 'Fundraise',
     links: [
       { label: 'Crowdfunding', to: '/crowdfunding/' },
+      { label: 'Register your NGO', to: '/register-ngo/' },
       { label: 'How it works', to: '/crowdfunding/#how-crowdfunding-works' },
       { label: 'Fees', to: '/crowdfunding/#fees' },
       { label: 'Documents needed', to: '/crowdfunding/#documents' },
