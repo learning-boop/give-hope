@@ -1953,17 +1953,50 @@
   }
 
   .offer-row__track {
-    grid-auto-columns: 84%;
+    grid-auto-columns: 60%;
+    gap: 10px;
     margin-inline: calc(var(--gutter, 16px) * -1);
     padding-inline: var(--gutter, 16px);
+    padding-bottom: 12px;
     scroll-padding-inline: var(--gutter, 16px);
   }
 
+  .offer-row {
+    margin-top: 20px;
+  }
+
+  /* Smaller, tighter cards on phones so more of the next one peeks in */
   .offer-card {
-    min-height: 176px;
+    grid-template-columns: minmax(0, 1fr) 32%;
+    min-height: 136px;
+    border-radius: var(--radius);
   }
 
   .offer-card__body {
-    padding: 16px 2px 16px 16px;
+    gap: 5px;
+    padding: 12px 2px 12px 13px;
+  }
+
+  .offer-card__tag {
+    padding: 2px 7px;
+    font-size: 9.5px;
+  }
+
+  .offer-card__name {
+    font-size: 17px;
+  }
+
+  .offer-card__text {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .offer-card__go {
+    padding-top: 2px;
+    font-size: 13px;
   }
 }
