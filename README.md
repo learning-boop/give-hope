@@ -19,10 +19,22 @@ Node 20.19+ or 22.12+ is required (Vite 8).
 
 | Route | File | Notes |
 | --- | --- | --- |
-| `/` | `src/pages/Home.jsx` | Hero with quick-donate card, cause filter, monthly giving, impact, FAQ |
+| `/` | `src/pages/Home.jsx` | Hero slider, cause filter, projects, monthly missions, programmes, NGOs, blog, FAQ |
+| `/causes/:id/` | `src/pages/Cause.jsx` | One page per cause (`src/data/causes.js`) |
+| `/fundraiser/:slug/` | `src/pages/Fundraiser.jsx` | One page per fundraiser in `src/data/campaigns.js`: story, updates, organisers |
+| `/donate/:slug/`, `/donate/mission/:id/`, `/donate/ngo/:id/` | `src/pages/Donate.jsx` | Three-step donation (amount, details, review). Not indexed |
+| `/monthly/` | `src/pages/Monthly.jsx` | All monthly missions and a quick pledge form |
+| `/missions/:id/` | `src/pages/Mission.jsx` | One page per monthly mission in `src/data/monthly.js` |
+| `/ngos/`, `/ngos/city/:city/` | `src/pages/Ngos.jsx` | NGO directory with search and cause filter (`src/data/ngos.js`) |
+| `/ngos/:id/` | `src/pages/NgoProfile.jsx` | NGO profile: work, fundraisers, funds utilisation, photos |
 | `/crowdfunding/` | `src/pages/Crowdfunding.jsx` | Start-a-fundraiser form, types, steps, tools, fees, documents, FAQ |
-| `/fundraiser/:slug/` | `src/pages/Fundraiser.jsx` | One prerendered page per fundraiser in `src/data/campaigns.js` |
-| `/monthly/` | `src/pages/Monthly.jsx` | Programme and amount picker, steps and benefits. Programmes are in `src/data/monthly.js` |
+| `/register-ngo/` | `src/pages/RegisterNgo.jsx` | NGO registration form |
+| `/impact/` | `src/pages/Impact.jsx` | Impact figures, causes, places and stories (`src/data/impact.js`) |
+| `/how-your-donation-works/` | `src/pages/HowItWorks.jsx` | The journey of a donation, and money FAQs |
+| `/gift-cards/` | `src/pages/GiftCards.jsx` | Buy a donation gift card, or claim one |
+| `/blog/`, `/blog/:slug/` | `src/pages/Blog.jsx`, `BlogPost.jsx` | Articles in `src/data/blog.js` |
+| `/indian-festival-calendar/` | `src/pages/FestivalCalendar.jsx` | Festival dates with giving ideas (`src/data/festivals.js`) |
+| `/careers/`, `/contact/`, `/login/` | `src/pages/Careers.jsx`, `Contact.jsx`, `Login.jsx` | Join us, contact form, accounts placeholder |
 | `/about/` | `src/pages/About.jsx` | Story, vision, mission, principles and recognition |
 | `/documents/` | `src/pages/Documents.jsx` | Registrations and reports. Put PDFs in `public/documents/` and set `file` |
 | `/404` | `src/pages/NotFound.jsx` | Copied to `dist/404.html` by `scripts/postbuild.js` |
@@ -58,16 +70,17 @@ identifiable people in marketing.
 
 ## Wiring up the backend (next steps)
 
-1. **Payments** — `QuickDonateCard` takes an `onDonate(amount)` prop; open Razorpay Checkout there
-   (see the TODO in `src/pages/Fundraiser.jsx`). Create the order on your server, never in the browser.
-2. **Fundraiser leads** — `StartFundraiserForm` takes `onSubmit(data)`; POST it to your API
-   (TODO in `src/pages/Crowdfunding.jsx`).
-3. **Live campaign data** — replace the array in `src/data/campaigns.js` with a fetch from your API at build time
-   (use a route `loader`, see the vite-react-ssg docs) and rebuild when campaigns change, or fetch progress
-   numbers on the client after load.
-4. **Monthly checkout** — `MonthlyForm` takes `onSubmit({ cause, amount })`; start the recurring payment there
-   (TODO in `src/pages/Monthly.jsx`). Until then the form says that no payment was taken.
-5. **Pages still to build** — login, blog, contact, privacy/terms/refund policies (footer links currently point to `#`).
+Until there is a backend, every form (donations, monthly pledges, gift cards, NGO registration, contact, careers)
+goes through `src/lib/forms.js`: to the form service in `SITE.forms`, else WhatsApp (`SITE.contact.whatsapp`), else email.
+
+1. **Payments** — every donation (one-time, monthly, NGO) goes through `startDonation()` in `src/lib/payments.js`.
+   Replace its body with your gateway: create the order (or Razorpay Subscription for monthly) on your server,
+   then open Checkout. Nothing else needs to change.
+2. **Accounts** — `/login/` explains accounts are coming; build donor login (donations, 80G receipts, monthly gifts)
+   once payments are stored on the server.
+3. **Gift card codes** — orders and claims are sent to the team; generate and check codes on the server later.
+4. **Live data** — replace the arrays in `src/data/` (campaigns, NGOs, impact) with data from your API at build time
+   (route `loader`, see the vite-react-ssg docs) and rebuild when they change.
 
 ## Deploying
 

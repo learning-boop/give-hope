@@ -6,7 +6,7 @@ import Faq from '../components/Faq'
 import { CheckList, Photo } from '../components/ui'
 import { CATEGORIES, filterCampaigns } from '../data/campaigns'
 import { CAUSE_DETAILS, causePath } from '../data/causes'
-import { MONTHLY_PLANS } from '../data/monthly'
+import { MONTHLY_PLANS, missionPath } from '../data/monthly'
 import { donorFaqs } from '../data/faqs'
 import NotFound from './NotFound'
 
@@ -62,7 +62,7 @@ export default function Cause() {
               Donate now
             </a>
             {plan && (
-              <Link to={`/monthly/?cause=${plan.id}`} className="btn btn--outline-light btn--lg btn--pill">
+              <Link to={missionPath(plan.id)} className="btn btn--outline-light btn--lg btn--pill">
                 Give monthly
               </Link>
             )}
@@ -107,7 +107,7 @@ export default function Cause() {
                   See all fundraisers
                 </a>
                 {plan && (
-                  <Link to={`/monthly/?cause=${plan.id}`} className="btn btn--outline">
+                  <Link to={missionPath(plan.id)} className="btn btn--outline">
                     Give monthly instead
                   </Link>
                 )}
@@ -132,7 +132,7 @@ export default function Cause() {
                 </h2>
                 <p className="body">{plan.text}</p>
                 <CheckList items={['Pause or cancel anytime from your account', '80G tax receipts for your gifts']} />
-                <Link to={`/monthly/?cause=${plan.id}`} className="btn btn--lime btn--lg">
+                <Link to={missionPath(plan.id)} className="btn btn--lime btn--lg">
                   Pledge monthly
                 </Link>
               </div>

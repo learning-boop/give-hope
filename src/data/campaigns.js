@@ -2,6 +2,16 @@
 // Leave raised / goal / donors / daysLeft as null until you have real figures: the progress bar and counts stay hidden;
 // fill them with numbers and the cards format them as ₹1,00,000 automatically.
 // photo is a key from data/photos.js. Remove photoIllustrative once a fundraiser has its own consented photo.
+//
+// ngo: '<id>' links a fundraiser to its NGO in data/ngos.js (shown under Organisers and on the NGO's profile).
+//
+// Optional fields for the fundraiser page (each section shows a placeholder until filled):
+//   story:        ['paragraph', 'paragraph', ...]                       the full story
+//   storyHeadings: { 2: 'A heading shown before paragraph 3' }           optional sub-headings inside the story
+//   updates:      [{ date: '2026-10-26', text: 'What the money did' }]  newest first
+//   documents:    [{ name: 'Hospital estimate', date: '2026-09-12' }]   what GiveHope checked, and when
+//   beneficiary:  'Who the money is paid to', e.g. the hospital or NGO
+//   topDonations: [{ name: 'Anonymous', amount: 25000 }]               real donations only, largest first
 
 export const CATEGORIES = [
   { id: 'all', label: 'All causes' },
@@ -40,6 +50,7 @@ export const campaigns = [
   },
   {
     slug: 'ration-kits-for-flood-affected-families',
+    ngo: 'partner-relief',
     category: 'disaster',
     categoryLabel: 'Disaster relief',
     urgent: true,
@@ -59,6 +70,7 @@ export const campaigns = [
   },
   {
     slug: 'school-fees-for-girls-in-rural-schools',
+    ngo: 'partner-education',
     category: 'education',
     categoryLabel: 'Education',
     urgent: false,
@@ -78,6 +90,7 @@ export const campaigns = [
   },
   {
     slug: 'meals-and-medicines-for-elders-living-alone',
+    ngo: 'partner-elders',
     category: 'elderly',
     categoryLabel: 'Elderly',
     urgent: false,
@@ -98,6 +111,7 @@ export const campaigns = [
   },
   {
     slug: 'food-and-treatment-for-injured-street-dogs',
+    ngo: 'partner-animals',
     category: 'animals',
     categoryLabel: 'Animals',
     urgent: false,
@@ -117,6 +131,7 @@ export const campaigns = [
   },
   {
     slug: 'meals-for-children-at-a-learning-centre',
+    ngo: 'partner-education',
     category: 'children',
     categoryLabel: 'Children',
     urgent: false,

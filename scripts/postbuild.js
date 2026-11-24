@@ -30,10 +30,11 @@ try {
   console.warn('postbuild: no 404 page found to copy')
 }
 
-const pages = (await findPages(dist))
-  .map((p) => p.replace(/\/$/, '') || '/')
-  .filter((p) => p !== '/404')
-  .sort()
+// Pages marked noindex (e.g. the /donate/ steps) stay out of the sitemap
+const isIndexable = async (p) => !(await fs.readFile(path.join(dist, p, 'index.html'), 'utf8')).includes('name="robots" content="noindex"')
+
+const found = (await findPages(dist)).map((p) => p.replace(/\/$/, '') || '/').filter((p) => p !== '/404')
+const pages = (await Promise.all(found.map(async (p) => ((await isIndexable(p)) ? p : null)))).filter(Boolean).sort()
 
 const today = new Date().toISOString().slice(0, 10)
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

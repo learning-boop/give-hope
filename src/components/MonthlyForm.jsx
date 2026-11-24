@@ -1,31 +1,28 @@
-import { inr } from '../site'
-import { MONTHLY_AMOUNTS, MONTHLY_MINIMUM, MONTHLY_PLANS } from '../data/monthly'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { inr } from '../site'
+import { MONTHLY_AMOUNTS, MONTHLY_MINIMUM, MONTHLY_PLANS, missionDonatePath } from '../data/monthly'
 
 /**
- * Picks a programme and a monthly amount.
- * `onSubmit({ cause, amount })` is where you start the recurring-payment checkout (e.g. Razorpay Subscriptions).
+ * Picks a mission and a monthly amount, then opens that mission's donation steps with the amount chosen.
  */
-export default function MonthlyForm({ cause, onCauseChange, onSubmit }) {
+export default function MonthlyForm({ cause, onCauseChange }) {
+  const navigate = useNavigate()
   const [amount, setAmount] = useState(1000)
   const [custom, setCustom] = useState('')
   const [isCustom, setIsCustom] = useState(false)
   const [error, setError] = useState('')
-  const [notice, setNotice] = useState('')
 
   const value = isCustom ? Number(custom) : amount
 
   function handleSubmit(e) {
     e.preventDefault()
-    setNotice('')
     if (!value || value < MONTHLY_MINIMUM) {
       setError(`Enter an amount of ${inr(MONTHLY_MINIMUM)} or more.`)
       return
     }
     setError('')
-    onSubmit?.({ cause, amount: value })
-    const plan = MONTHLY_PLANS.find((p) => p.id === cause)
-    setNotice(`Online checkout is not connected yet. You chose ${inr(value)} a month for “${plan.title}”, and no payment was taken.`)
+    navigate(missionDonatePath(cause, value))
   }
 
   return (
@@ -35,7 +32,7 @@ export default function MonthlyForm({ cause, onCauseChange, onSubmit }) {
       </h2>
 
       <div className="field">
-        <label htmlFor="mg-cause">Programme</label>
+        <label htmlFor="mg-cause">Mission</label>
         <select id="mg-cause" className="select" value={cause} onChange={(e) => onCauseChange(e.target.value)}>
           {MONTHLY_PLANS.map((p) => (
             <option key={p.id} value={p.id}>
@@ -102,11 +99,6 @@ export default function MonthlyForm({ cause, onCauseChange, onSubmit }) {
       <p className="small" style={{ fontSize: 13 }}>
         Pause or cancel anytime from your account.
       </p>
-      {notice && (
-        <p className="form-notice" role="status">
-          {notice}
-        </p>
-      )}
     </form>
   )
 }

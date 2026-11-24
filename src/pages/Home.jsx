@@ -7,12 +7,17 @@ import Faq from '../components/Faq'
 import HeroSlider from '../components/HeroSlider'
 import Doodles from '../components/Doodles'
 import OfferRow from '../components/OfferRow'
+import NgoCard from '../components/NgoCard'
+import PostCard from '../components/PostCard'
+import { NGOS, NGO_CITIES, cityPath } from '../data/ngos'
+import { POSTS } from '../data/blog'
+import { FESTIVALS } from '../data/festivals'
 import { GET_INVOLVED, PROGRAMS, PROJECTS } from '../data/change-work'
 import { CheckList, LoopVideo, Photo, SectionHead } from '../components/ui'
 import { CATEGORIES, filterCampaigns } from '../data/campaigns'
 import { CAUSE_DETAILS } from '../data/causes'
 import { donorFaqs } from '../data/faqs'
-import { MONTHLY_PLANS } from '../data/monthly'
+import { MONTHLY_PLANS, missionPath } from '../data/monthly'
 import { SITE } from '../site'
 
 const TRUST = [
@@ -140,6 +145,14 @@ function searchCampaigns(list, query) {
 
 export default function Home() {
   const [category, setCategory] = useState('all')
+  // Next three festivals. The page is prerendered, so the list is worked out from today's date once it is running.
+  const [upcoming, setUpcoming] = useState(() => FESTIVALS.slice(0, 3))
+  useEffect(() => {
+    const today = new Date().toISOString().slice(0, 10)
+    const next = FESTIVALS.filter((f) => f.date >= today).slice(0, 3)
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- today's date is only known in the browser
+    if (next.length) setUpcoming(next)
+  }, [])
   // The navbar's Donate menu links here as /?cause=medical#fundraisers — pick that cause once the page is running
   const { search } = useLocation()
   useEffect(() => {
@@ -314,7 +327,7 @@ export default function Home() {
                   <div className="plan-card__body">
                     <h3 className="feature__title">{p.title}</h3>
                     <p className="small">{p.text}</p>
-                    <Link to={`/monthly/?cause=${p.id}`} className="btn btn--lime">
+                    <Link to={missionPath(p.id)} className="btn btn--lime">
                       Pledge monthly
                     </Link>
                   </div>
@@ -510,6 +523,36 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Verified NGOs */}
+      <section className="section section--cream" aria-labelledby="home-ngos-title">
+        <div className="container">
+          <div className="section-head section-head--row" data-reveal>
+            <div>
+              <span className="eyebrow">Verified NGOs</span>
+              <h2 className="h2" id="home-ngos-title">
+                Support organisations doing the work
+              </h2>
+              <p className="body">Every NGO is checked by our team: registration, 80G, accounts and a visit to their work.</p>
+            </div>
+            <div className="ngo-cities ngo-cities--light">
+              {NGO_CITIES.map((c) => (
+                <Link to={cityPath(c.id)} className="ngo-city-pill" key={c.id}>
+                  {c.name}
+                </Link>
+              ))}
+              <Link to="/ngos/" className="ngo-city-pill">
+                All NGOs
+              </Link>
+            </div>
+          </div>
+          <div className="ngo-grid section-body">
+            {NGOS.slice(0, 3).map((n) => (
+              <NgoCard ngo={n} key={n.id} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Get involved */}
       <section id="get-involved" className="offer-section" aria-labelledby="involved-title">
         <div className="container">
@@ -561,6 +604,54 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Blog and upcoming festivals */}
+      <section className="section" aria-labelledby="home-blog-title">
+        <div className="container home-read">
+          <div>
+            <div className="section-head section-head--row">
+              <div>
+                <span className="eyebrow">From the blog</span>
+                <h2 className="h2" id="home-blog-title">
+                  Give wisely
+                </h2>
+              </div>
+              <Link to="/blog/" className="text-link">
+                All articles <Icon name="arrowRight" size={18} strokeWidth={2.2} />
+              </Link>
+            </div>
+            <div className="home-read__posts section-body">
+              {POSTS.slice(0, 2).map((p) => (
+                <PostCard post={p} key={p.slug} />
+              ))}
+            </div>
+          </div>
+          <aside className="home-fest" aria-labelledby="home-fest-title">
+            <span className="eyebrow">Coming up</span>
+            <h2 className="h3" id="home-fest-title">
+              Give on the days that matter
+            </h2>
+            <ul role="list">
+              {upcoming.map((f) => (
+                <li key={f.date + f.name}>
+                  <time dateTime={f.date}>
+                    {new Date(f.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                  </time>
+                  <span>
+                    <strong>{f.name}</strong>
+                    <Link to={f.link} className="small">
+                      {f.idea}
+                    </Link>
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <Link to="/indian-festival-calendar/" className="text-link">
+              Full festival calendar <Icon name="arrowRight" size={18} strokeWidth={2.2} />
+            </Link>
+          </aside>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section id="faq" className="section" aria-labelledby="faq-title">
         <div className="container faq-layout">
@@ -570,9 +661,9 @@ export default function Home() {
               Before you give
             </h2>
             <p className="body">Straight answers about tax benefits, verification and where your money goes.</p>
-            <a href={`mailto:${SITE.contact.email}`} className="text-link">
+            <Link to="/contact/" className="text-link">
               Contact support <Icon name="arrowRight" size={18} strokeWidth={2.2} />
-            </a>
+            </Link>
           </div>
           <div className="faq-layout__list">
             <Faq items={donorFaqs} />

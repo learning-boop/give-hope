@@ -17,6 +17,15 @@ export const SITE = {
     whatsapp: '919885933339',
   },
 
+  // Full links to your pages, e.g. 'https://www.instagram.com/givehope'. Empty ones are not shown in the footer.
+  social: {
+    facebook: '',
+    instagram: '',
+    youtube: '',
+    linkedin: '',
+    x: '',
+  },
+
   // Where form answers go. Easiest: create a free access key at web3forms.com with your email,
   // then set endpoint: 'https://api.web3forms.com/submit' and accessKey: '<your key>'.
   // (Formspree works too: set endpoint to your form URL and leave accessKey empty.)

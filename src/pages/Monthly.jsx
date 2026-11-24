@@ -1,12 +1,13 @@
 import { useState, useSyncExternalStore } from 'react'
+import { Link } from 'react-router-dom'
 import Seo from '../components/Seo'
 import Icon from '../components/Icon'
 import MonthlyForm from '../components/MonthlyForm'
 import { CheckList, Photo, SectionHead } from '../components/ui'
-import { MONTHLY_PLANS } from '../data/monthly'
+import { MONTHLY_PLANS, missionPath } from '../data/monthly'
 
 const STEPS = [
-  { title: 'Pick a programme', text: 'Choose the cause you want to stand behind month after month.' },
+  { title: 'Pick a mission', text: 'Choose the cause you want to stand behind month after month.' },
   { title: 'Set your amount', text: 'Pick a suggested amount or enter one that suits your budget.' },
   { title: 'Give automatically', text: 'Your gift is charged once a month, so there is nothing to remember.' },
   { title: 'See where it goes', text: 'Get updates with bills, receipts and photos as the money is used.' },
@@ -58,36 +59,29 @@ export default function Monthly() {
               One-off gifts help in a crisis. A monthly gift keeps the work going once the crisis has passed.
             </p>
             <div className="load-in" style={{ '--d': 2 }}>
-              <CheckList variant="lime" items={['Six programmes to choose from', 'Updates on how your money is used', 'Pause or cancel anytime']} />
+              <CheckList variant="lime" items={['Six missions to choose from', 'Updates on how your money is used', 'Pause or cancel anytime']} />
             </div>
           </div>
-          <MonthlyForm
-            cause={cause}
-            onCauseChange={setCause}
-            onSubmit={(data) => {
-              // TODO: start the recurring-payment checkout here (e.g. Razorpay Subscriptions), created on your server
-              console.info('Monthly gift', data)
-            }}
-          />
+          <MonthlyForm cause={cause} onCauseChange={setCause} />
         </div>
       </section>
 
       <section className="section" aria-labelledby="programmes-title">
         <div className="container">
           <div data-reveal>
-            <SectionHead eyebrow="Programmes" title="Choose what you want to stand behind" id="programmes-title" />
+            <SectionHead eyebrow="Monthly missions" title="Choose what you want to stand behind" id="programmes-title" />
           </div>
           <div className="grid-fill section-body">
             {MONTHLY_PLANS.map((p, i) => (
               <div className="reveal-cell" data-reveal style={{ '--d': i % 3 }} key={p.id}>
-                <a className="media-tile type-tile" href="#monthly-form" onClick={() => setCause(p.id)}>
+                <Link className="media-tile type-tile" to={missionPath(p.id)}>
                   <Photo name={p.photo} alt="" position={p.position} sizes="(max-width: 720px) 100vw, 400px" />
                   <span className="media-tile__title">{p.title}</span>
                   <span className="media-tile__text">{p.text}</span>
                   <span className="media-tile__cta">
-                    Give monthly <Icon name="arrowRight" size={16} strokeWidth={2.2} />
+                    See mission <Icon name="arrowRight" size={16} strokeWidth={2.2} />
                   </span>
-                </a>
+                </Link>
               </div>
             ))}
           </div>

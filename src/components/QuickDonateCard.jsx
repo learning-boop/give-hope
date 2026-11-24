@@ -8,7 +8,8 @@ const AMOUNTS = [500, 1000, 2500, 5000]
 
 /**
  * Amount picker + donate button for one fundraiser.
- * `onDonate(amount)` is where you open your payment gateway checkout (Razorpay etc.).
+ * The button opens the donation steps at /donate/<slug>/ with the amount preselected.
+ * Pass `onDonate(amount)` only to handle the click yourself instead.
  */
 export default function QuickDonateCard({ campaign, showTitle = true, onDonate, className = '' }) {
   const [amount, setAmount] = useState(1000)
@@ -62,7 +63,7 @@ export default function QuickDonateCard({ campaign, showTitle = true, onDonate, 
           </button>
         ))}
       </div>
-      <Link to={`${path}?amount=${amount}`} className="btn btn--primary btn--block" style={{ minHeight: 52 }} onClick={handleDonate}>
+      <Link to={`/donate/${c.slug}/?amount=${amount}`} className="btn btn--primary btn--block" style={{ minHeight: 52 }} onClick={handleDonate}>
         Donate {inr(amount)}
       </Link>
     </div>

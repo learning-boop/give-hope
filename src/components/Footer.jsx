@@ -2,14 +2,17 @@ import { Link } from 'react-router-dom'
 import Logo from './Logo'
 import { SITE } from '../site'
 
-// Links pointing at "#" are pages still to be built — swap in real routes as you add them.
+const SOCIAL_LABELS = { facebook: 'Facebook', instagram: 'Instagram', youtube: 'YouTube', linkedin: 'LinkedIn', x: 'X' }
+
 const COLUMNS = [
   {
     title: 'Give',
     links: [
       { label: 'Browse fundraisers', href: '/#fundraisers' },
       { label: 'Urgent needs', href: '/#fundraisers' },
-      { label: 'Monthly giving', to: '/monthly/' },
+      { label: 'Monthly missions', to: '/monthly/' },
+      { label: 'NGOs', to: '/ngos/' },
+      { label: 'Gift cards', to: '/gift-cards/' },
       { label: 'Tax benefits', href: '/#faq' },
     ],
   },
@@ -28,9 +31,12 @@ const COLUMNS = [
     links: [
       { label: 'Our story', to: '/about/' },
       { label: 'Documents and reports', to: '/documents/' },
-      { label: 'Our impact', href: '/#impact' },
-      { label: 'Blog', href: '#' },
-      { label: 'Contact', href: `mailto:${SITE.contact.email}` },
+      { label: 'Our impact', to: '/impact/' },
+      { label: 'How your donation works', to: '/how-your-donation-works/' },
+      { label: 'Blog', to: '/blog/' },
+      { label: 'Festival calendar', to: '/indian-festival-calendar/' },
+      { label: 'Careers', to: '/careers/' },
+      { label: 'Contact', to: '/contact/' },
     ],
   },
   {
@@ -45,6 +51,7 @@ const COLUMNS = [
 
 export default function Footer() {
   const { contact, registration } = SITE
+  const socials = Object.entries(SITE.social || {}).filter(([, url]) => url)
   return (
     <footer className="site-footer leaf-bg">
       <div className="container">
@@ -62,7 +69,23 @@ export default function Footer() {
               <span>{contact.address}</span>
               <a href={`mailto:${contact.email}`}>{contact.email}</a>
               <a href={`tel:${contact.phone.replace(/[^\d+]/g, '')}`}>{contact.phone}</a>
+              {contact.whatsapp && (
+                <a href={`https://wa.me/${contact.whatsapp}`} target="_blank" rel="noopener">
+                  WhatsApp +{contact.whatsapp.slice(0, 2)} {contact.whatsapp.slice(2, 7)} {contact.whatsapp.slice(7)}
+                </a>
+              )}
             </address>
+            {socials.length > 0 && (
+              <ul className="site-footer__social" role="list" aria-label="GiveHope on social media">
+                {socials.map(([key, url]) => (
+                  <li key={key}>
+                    <a href={url} target="_blank" rel="noopener">
+                      {SOCIAL_LABELS[key]}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <div className="site-footer__cols">
@@ -97,7 +120,11 @@ export default function Footer() {
           <span>© {__BUILD_YEAR__} GiveHope. All rights reserved.</span>
           <span>Payments secured by {SITE.paymentGateway} · UPI · Cards · Netbanking</span>
         </div>
-        <p className="site-footer__credit">Photos are illustrative stock images from Unsplash and do not show fundraiser beneficiaries.</p>
+        <p className="site-footer__credit">
+          Photos are illustrative — stock images from Unsplash and AI-generated illustrations — and do not show fundraiser
+          beneficiaries. Stories and photos of beneficiaries, including children, are shared only with their or their
+          guardians’ consent, to raise awareness and donations for their cause.
+        </p>
         <p className="site-footer__script" aria-hidden="true">
           Your gift. Their second chance.
         </p>
